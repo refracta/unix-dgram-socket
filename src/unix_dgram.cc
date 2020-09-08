@@ -1,6 +1,7 @@
 // -D_GNU_SOURCE makes SOCK_NONBLOCK etc. available on linux
 #undef  _GNU_SOURCE
 #define _GNU_SOURCE
+#define DEFAULT_BUFFER_SIZE 131072
 
 #include <nan.h>
 #include <errno.h>
@@ -74,7 +75,7 @@ void OnRecv(SocketContext* sc) {
   msghdr msg;
   iovec iov;
   ssize_t err;
-  char scratch[65536];
+  char scratch[131072];
 
   /* Union to avoid breaking strict-aliasing rules */
   union {
