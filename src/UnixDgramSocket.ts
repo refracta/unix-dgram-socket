@@ -26,7 +26,7 @@ export class UnixDgramSocket extends EventEmitter {
     public bind(socketPath: string): void {
         const result: number = lib.bind(this.fd, this.cleanupSocketFile(socketPath));
         if (result < 0) {
-            this.emit('error', new SocketException(result, 'bind'));
+            this.emit('error', new SocketException(result, 'bind', socketPath));
         } else {
             this.emit('listening', socketPath);
         }
@@ -46,7 +46,7 @@ export class UnixDgramSocket extends EventEmitter {
         }
 
         if (result < 0) {
-            this.emit('error', new SocketException(result, 'send'));
+            this.emit('error', new SocketException(result, 'send', socketPath));
         } else if (result === 1) {
             this.emit('congestion', data);
         }
@@ -80,7 +80,7 @@ export class UnixDgramSocket extends EventEmitter {
     public connect(socketPath: string) {
         const result: number = lib.connect(this.fd, socketPath);
         if (result < 0) {
-            this.emit('error', new SocketException(result, 'connect'));
+            this.emit('error', new SocketException(result, 'connect', socketPath));
         } else {
             this.connected = true;
             this.emit('connect', socketPath);
